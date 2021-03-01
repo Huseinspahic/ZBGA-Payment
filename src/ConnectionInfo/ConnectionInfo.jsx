@@ -19,7 +19,7 @@ class ConnectionInfo extends React.Component {
 
     return (
       <Group direction="column" spacing={0}>
-        <Section position="first">
+        <Section>
           {backendURL ? (
             <Group
               direction="row"
@@ -45,41 +45,13 @@ class ConnectionInfo extends React.Component {
               </Button>
             </Group>
           ) : (
-            <Group direction="row">
-              <Icon icon="lock" />
-              <Text color="lightGrey" size={14}>
-                Connect to backend server
-              </Text>
-            </Group>
-          )}
-        </Section>
-        <Section position="last">
-          {reader ? (
-            <Group
-              direction="row"
-              alignment={{
-                justifyContent: "space-between",
-                alignItems: "center"
-              }}
-            >
               <Group direction="row">
-                <Icon icon="keypad" />
-                <Text truncate color="dark" size={14}>
-                  {reader.label}
-                </Text>
-              </Group>
-              <Button color="text" onClick={onClickDisconnect}>
-                Disconnect
-              </Button>
-            </Group>
-          ) : (
-            <Group direction="row">
-              <Icon icon="keypad" />
-              <Text color="lightGrey" size={14}>
-                No reader connected
+                <Icon icon="lock" />
+                <Text color="lightGrey" size={14}>
+                  Connect to backend server
               </Text>
-            </Group>
-          )}
+              </Group>
+            )}
         </Section>
       </Group>
     );

@@ -26,9 +26,10 @@ class App extends Component {
       readerLabel: "",
       registrationCode: "",
       cancelablePayment: false,
-      chargeAmount: 5100,
-      itemDescription: "Red t-shirt",
-      taxAmount: 100,
+      chargeAmount: "",
+      itemDescription: "",
+      fName: "",
+      taxAmount: 1,
       currency: "usd",
       workFlowInProgress: null,
       disoveryWasCancelled: false,
@@ -240,12 +241,11 @@ class App extends Component {
         line_items: [
           {
             description: this.state.itemDescription,
-            amount: this.state.chargeAmount,
+            amount: this.state.chargeAmount * 100,
             quantity: 1
           }
         ],
-        tax: this.state.taxAmount,
-        total: this.state.chargeAmount + this.state.taxAmount,
+        total: this.state.chargeAmount * 100 + (this.state.chargeAmount * 3),
         currency: this.state.currency
       }
     });
@@ -264,9 +264,9 @@ class App extends Component {
           paymentMethodTypes.push("interac_present");
         }
         let createIntentResponse = await this.client.createPaymentIntent({
-          amount: this.state.chargeAmount + this.state.taxAmount,
+          amount: this.state.chargeAmount * 100 + (this.state.chargeAmount * 3),
           currency: this.state.currency,
-          description: "Test Charge",
+          description: this.state.itemDescription,
           paymentMethodTypes
         });
         this.pendingPaymentIntentSecret = createIntentResponse.secret;
@@ -398,6 +398,8 @@ class App extends Component {
     this.setState({ chargeAmount: parseInt(amount, 10) });
   updateItemDescription = description =>
     this.setState({ itemDescription: description });
+  updateFName = name =>
+    this.setState({ fName: name });
   updateTaxAmount = amount =>
     this.setState({ taxAmount: parseInt(amount, 10) });
   updateCurrency = currency => this.setState({ currency: currency });
@@ -438,6 +440,26 @@ class App extends Component {
     } else {
       return (
         <>
+          <CartForm
+            workFlowDisabled={this.isWorkflowDisabled()}
+            onClickUpdateLineItems={() =>
+              this.runWorkflow("updateLineItems", this.updateLineItems)
+            }
+            itemDescription={this.state.itemDescription}
+            fName={this.state.fName}
+            chargeAmount={this.state.chargeAmount}
+            taxAmount={this.state.taxAmount}
+            currency={this.state.currency}
+            onChangeCurrency={currency => this.updateCurrency(currency)}
+            onChangeChargeAmount={amount => this.updateChargeAmount(amount)}
+            onChangeTaxAmount={amount => this.updateTaxAmount(amount)}
+            onChangeFName={name =>
+              this.updateFName(name)
+            }
+            onChangeItemDescription={description =>
+              this.updateItemDescription(description)
+            }
+          />
           <CommonWorkflows
             workFlowDisabled={this.isWorkflowDisabled()}
             onClickCollectCardPayments={() =>
@@ -451,35 +473,6 @@ class App extends Component {
             onChangeTestCardNumber={this.onChangeTestCardNumber}
             cancelablePayment={cancelablePayment}
             usingSimulator={usingSimulator}
-          />
-          <RefundForm
-            onClickProcessRefund={() =>
-              this.runWorkflow("collectRefund", this.collectRefundPaymentMethod)
-            }
-            chargeID={this.state.refundedChargeID}
-            onChangeChargeID={id => this.updateRefundChargeID(id)}
-            refundAmount={this.state.refundedAmount}
-            onChangeRefundAmount={amt => this.updateRefundAmount(amt)}
-            cancelableRefund={this.state.cancelableRefund}
-            onClickCancelRefund={() =>
-              this.runWorkflow("cancelRefund", this.cancelPendingRefund)
-            }
-          />
-          <CartForm
-            workFlowDisabled={this.isWorkflowDisabled()}
-            onClickUpdateLineItems={() =>
-              this.runWorkflow("updateLineItems", this.updateLineItems)
-            }
-            itemDescription={this.state.itemDescription}
-            chargeAmount={this.state.chargeAmount}
-            taxAmount={this.state.taxAmount}
-            currency={this.state.currency}
-            onChangeCurrency={currency => this.updateCurrency(currency)}
-            onChangeChargeAmount={amount => this.updateChargeAmount(amount)}
-            onChangeTaxAmount={amount => this.updateTaxAmount(amount)}
-            onChangeItemDescription={description =>
-              this.updateItemDescription(description)
-            }
           />
         </>
       );
@@ -516,7 +509,6 @@ class App extends Component {
 
               {this.renderForm()}
             </Group>
-            <Logs />
           </Group>
         </Group>
       </div>

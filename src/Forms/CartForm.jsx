@@ -11,9 +11,7 @@ import Select from "../components/Select/Select.jsx";
 
 class CartForm extends React.Component {
   static CURRENCIES = [
-    { value: "usd", label: "USD" },
-    { value: "gbp", label: "GBP" },
-    { value: "cad", label: "CAD" }
+    { value: "usd", label: "USD" }
   ];
 
   render() {
@@ -22,10 +20,10 @@ class CartForm extends React.Component {
         <Group direction="column" spacing={0}>
           <Section position="first">
             <Text size={16} color="dark">
-              Cart configuration
+              <center>Cart</center>
             </Text>
           </Section>
-          <Section position="middle">
+          <Section position="last">
             <Group direction="column">
               <Group
                 direction="row"
@@ -34,13 +32,22 @@ class CartForm extends React.Component {
                   alignItems: "center"
                 }}
               >
+              </Group>
+              <Group
+                direction="row"
+                alignment={{
+                  justifyContent: "space-between",
+                  alignItems: "center"
+                }}
+              >
                 <Text size={12} color="dark">
-                  Item description
+                  Ime/Prezime Description
                 </Text>
                 <TextInput
                   value={this.props.itemDescription}
                   onChange={this.props.onChangeItemDescription}
-                  ariaLabel="Item description"
+                  ariaLabel="Description"
+                  placeholder="ime/prezime description"
                 />
               </Group>
               <Group
@@ -57,6 +64,7 @@ class CartForm extends React.Component {
                   value={this.props.chargeAmount}
                   onChange={this.props.onChangeChargeAmount}
                   ariaLabel="Charge amount"
+                  placeholder="100.00"
                 />
               </Group>
               <Group
@@ -67,13 +75,9 @@ class CartForm extends React.Component {
                 }}
               >
                 <Text size={12} color="dark">
-                  Tax amount
+                  Processing Fee 3%
                 </Text>
-                <TextInput
-                  value={this.props.taxAmount}
-                  onChange={this.props.onChangeTaxAmount}
-                  ariaLabel="Tax amount"
-                />
+
               </Group>
               <Group
                 direction="row"
@@ -106,17 +110,6 @@ class CartForm extends React.Component {
                 </Group>
               </Button>
             </Group>
-          </Section>
-          <Section position="last">
-            <Text size={12} color="lightGrey">
-              Test payment responses{" "}
-              <Link
-                href="https://stripe.com/docs/terminal/testing"
-                text="using amounts"
-                newWindow
-              />
-              .
-            </Text>
           </Section>
         </Group>
       </>

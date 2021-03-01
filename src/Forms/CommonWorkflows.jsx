@@ -23,7 +23,7 @@ class CommonWorkflows extends React.Component {
       <Section>
         <Group direction="column" spacing={16}>
           <Text size={16} color="dark">
-            Common workflows
+            <center>Submit Payment</center>
           </Text>
           <Group direction="column" spacing={8}>
             {usingSimulator && (
@@ -42,19 +42,6 @@ class CommonWorkflows extends React.Component {
                 <Icon icon="payments" />
                 <Text color="blue" size={14}>
                   Collect card payment
-                </Text>
-              </Group>
-            </Button>
-            <Button
-              color="white"
-              onClick={this.props.onClickSaveCardForFutureUse}
-              disabled={workFlowDisabled}
-              justifyContent="left"
-            >
-              <Group direction="row">
-                <Icon icon="card" />
-                <Text color="blue" size={14}>
-                  Save card for future use
                 </Text>
               </Group>
             </Button>
