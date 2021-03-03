@@ -2,4 +2,4 @@
 
 Stripe terminal JS SDK
 
-This terminal is run on a ruby backend server, locally at the Community of Bosniaks GA.
+This terminal is run on a ruby backend server locally.
